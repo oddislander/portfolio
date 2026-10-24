@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pete Fala - Portfolio</title>
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+</style>
+
+</head>
+<body>
+   <header>
+  <div class="header-left">
+    <img src="images/chelu.png" alt="Your Name" class="profile-pic">
+    <div>
+      <h1>Pete Fala</h1>
+      <p class="tagline">Design / Graphics / Murals</p>
+    </div>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="work.html">Work</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+    <main>
+        <main>
+  <h2>Portfolio</h2>
+  <div class="work-grid">
+    <a href="images/tiger.jpg" class="work-item">
+      <img src="images/tiger.jpg" alt="Tiger">
+    </a>
+    <a href="images/fish.jpg" class="work-item">
+      <img src="images/fish.jpg" alt="Fish">
+    </a>
+    <a href="images/floral.jpg" class="work-item">
+      <img src="images/floral.jpg" alt="Floral">
+    </a>
+    <a href="images/landscape.jpg" class="work-item">
+      <img src="images/landscape.jpg" alt="Landscape">
+    </a>
+    <a href="images/absract.jpg" class="work-item">
+      <img src="images/absract.jpg" alt="Abstract">
+    </a>
+    <a href="images/phoenix.jpg" class="work-item">
+      <img src="images/phoenix.jpg" alt="Phoenix">
+    </a>
+    <a href="images/skull.jpg" class="work-item">
+      <img src="images/skull.jpg" alt="Skull">
+    </a>
+    <a href="images/tree-portal.jpg" class="work-item">
+      <img src="images/tree-portal.jpg" alt="Tree portal">
+    </a>
+    <a href="images/true-family.jpg" class="work-item">
+      <img src="images/true-family.jpg" alt="True family">
+    </a>
+    <a href="images/medusa-mural.jpg" class="work-item">
+      <img src="images/medusa-mural.jpg" alt="Medusa mural">
+    </a>
+    <a href="images/monster-mural.jpg" class="work-item">
+      <img src="images/monster-mural.jpg" alt="Monster mural">
+    </a>
+    <a href="images/museum-mural.jpg" class="work-item">
+      <img src="images/museum-mural.jpg" alt="Museum mural">
+    </a>
+  </div>
+</main>
+    </main>
+
+    <div id="lightbox" class="lightbox">
+  <span class="close">&times;</span>
+  <span class="arrow prev">&#10094;</span>
+  <img id="lightbox-img" src="" alt="">
+  <span class="arrow next">&#10095;</span>
+</div>
+
+<script>
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const closeBtn = document.querySelector('.close');
+const prevBtn = document.querySelector('.prev');
+const nextBtn = document.querySelector('.next');
+const items = document.querySelectorAll('.work-item');
+let currentIndex = 0;
+
+function openLightbox(index) {
+  currentIndex = index;
+  lightboxImg.src = items[index].href;
+  lightbox.style.display = 'flex';
+}
+
+function closeLightbox() {
+  lightbox.style.display = 'none';
+}
+
+function showPrev() {
+  currentIndex = (currentIndex - 1 + items.length) % items.length;
+  lightboxImg.src = items[currentIndex].href;
+}
+
+function showNext() {
+  currentIndex = (currentIndex + 1) % items.length;
+  lightboxImg.src = items[currentIndex].href;
+}
+
+items.forEach((item, index) => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    openLightbox(index);
+  });
+});
+
+closeBtn.addEventListener('click', closeLightbox);
+prevBtn.addEventListener('click', showPrev);
+nextBtn.addEventListener('click', showNext);
+
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (lightbox.style.display !== 'flex') return;  // only when lightbox is open
+
+  if (e.key === 'ArrowLeft') {
+    showPrev();
+  } else if (e.key === 'ArrowRight') {
+    showNext();
+  } else if (e.key === 'Escape') {
+    closeLightbox();
+  }
+});
+
+
+</script>
+
+    <footer>
+        <p>Pete Fala - Odd Islander Studios 2026 &copy;</p>
+    </footer>
+</body>
+</html>
