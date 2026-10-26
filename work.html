@@ -151,12 +151,10 @@ document.addEventListener('keydown', (e) => {
 
 // ... your existing openLightbox, closeLightbox, showPrev, showNext, etc. ...
 
-// iPhone-style swipe (image follows finger)
+// Smooth swipe
 let startX = 0;
 let currentX = 0;
 let isDragging = false;
-
-lightboxImg.style.transition = 'transform 0.2s ease';
 
 lightbox.addEventListener('touchstart', (e) => {
   startX = e.touches[0].clientX;
@@ -175,28 +173,39 @@ lightbox.addEventListener('touchend', () => {
   if (!isDragging) return;
   isDragging = false;
   const diff = currentX - startX;
-  const threshold = 60;
+  const threshold = 50;
 
-  lightboxImg.style.transition = 'transform 0.25s ease';
+  lightboxImg.style.transition = 'transform 0.3s ease';
 
-  if (diff > threshold) {
-    // swipe right → previous
-    lightboxImg.style.transform = 'translateX(100%)';
+  if (Math.abs(diff) > threshold) {
+    // Determine direction and preload
+    const goingNext = diff < 0;
+    const newIndex = goingNext
+      ? (currentIndex + 1) % items.length
+      : (currentIndex - 1 + items.length) % items.length;
+
+    // Preload the new image
+    const preload = new Image();
+    preload.src = items[newIndex].href;
+
+    // Slide out
+    lightboxImg.style.transform = goingNext ? 'translateX(-100%)' : 'translateX(100%)';
+
+    // After slide-out, swap image and slide in
     setTimeout(() => {
-      showPrev();
+      currentIndex = newIndex;
+      lightboxImg.src = items[newIndex].href;
       lightboxImg.style.transition = 'none';
-      lightboxImg.style.transform = 'translateX(0)';
-    }, 200);
-  } else if (diff < -threshold) {
-    // swipe left → next
-    lightboxImg.style.transform = 'translateX(-100%)';
-    setTimeout(() => {
-      showNext();
-      lightboxImg.style.transition = 'none';
-      lightboxImg.style.transform = 'translateX(0)';
-    }, 200);
+      lightboxImg.style.transform = goingNext ? 'translateX(100%)' : 'translateX(-100%)';
+
+      // Force reflow then slide to center
+      requestAnimationFrame(() => {
+        lightboxImg.style.transition = 'transform 0.3s ease';
+        lightboxImg.style.transform = 'translateX(0)';
+      });
+    }, 280);
   } else {
-    // not far enough → snap back
+    // Snap back
     lightboxImg.style.transform = 'translateX(0)';
   }
 });
