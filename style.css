@@ -16,7 +16,7 @@ html {
 }
 
 header {
-  position: relative;
+  position: fixed;          /* was relative — this keeps it stationary */
   top: 0;
   left: 0;
   right: 0;
@@ -36,6 +36,7 @@ main {
   padding: 0 1.25rem;
   flex: 1 0 auto;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .header-left {
@@ -49,7 +50,7 @@ main {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  textalign: center;
+  text-align: center;
 }
 
 h1 {
@@ -189,6 +190,8 @@ p.tight {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  touch-action: none;
+  overscroll-behavior: contain;
 }
 
 .lightbox img {
@@ -259,15 +262,27 @@ p.tight {
 @media (max-width: 600px) {
   body {
     padding-top: 140px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
   h1 {
     font-size: 2.2rem;
   }
+  main {
+    padding: 0 0.5rem;
+  }
   .work-grid {
     grid-template-columns: repeat(2, 1fr);
+    margin-left: auto;
+    margin-right: auto;
   }
   .lightbox img {
     max-height: 65vh;
     margin-bottom: 90px;
+  }
+  .contact-box,
+  .about-photo {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
