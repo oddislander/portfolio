@@ -138,29 +138,55 @@ document.addEventListener('keydown', (e) => {
 
     // ... your existing openLightbox, closeLightbox, showPrev, showNext, etc. ...
 
-// Swipe support
-let touchStartX = 0;
-let touchEndX = 0;
+// iPhone-style swipe (image follows finger)
+let startX = 0;
+let currentX = 0;
+let isDragging = false;
+
+lightboxImg.style.transition = 'transform 0.2s ease';
 
 lightbox.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].screenX;
+  startX = e.touches[0].clientX;
+  isDragging = true;
+  lightboxImg.style.transition = 'none';
 }, { passive: true });
 
-lightbox.addEventListener('touchend', (e) => {
-  touchEndX = e.changedTouches[0].screenX;
-  const swipeDistance = touchEndX - touchStartX;
-  const minSwipe = 40;
+lightbox.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+  currentX = e.touches[0].clientX;
+  const diff = currentX - startX;
+  lightboxImg.style.transform = `translateX(${diff}px)`;
+}, { passive: true });
 
-  if (Math.abs(swipeDistance) > minSwipe) {
-    if (swipeDistance > 0) {
+lightbox.addEventListener('touchend', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  const diff = currentX - startX;
+  const threshold = 60;
+
+  lightboxImg.style.transition = 'transform 0.25s ease';
+
+  if (diff > threshold) {
+    // swipe right → previous
+    lightboxImg.style.transform = 'translateX(100%)';
+    setTimeout(() => {
       showPrev();
-    } else {
+      lightboxImg.style.transition = 'none';
+      lightboxImg.style.transform = 'translateX(0)';
+    }, 200);
+  } else if (diff < -threshold) {
+    // swipe left → next
+    lightboxImg.style.transform = 'translateX(-100%)';
+    setTimeout(() => {
       showNext();
-    }
+      lightboxImg.style.transition = 'none';
+      lightboxImg.style.transform = 'translateX(0)';
+    }, 200);
+  } else {
+    // not far enough → snap back
+    lightboxImg.style.transform = 'translateX(0)';
   }
-}, { passive: true });
-
-
+});
 </script>
 
     <footer>
