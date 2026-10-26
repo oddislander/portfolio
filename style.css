@@ -279,6 +279,8 @@ p.tight {
   .lightbox img {
     max-height: 65vh;
     margin-bottom: 90px;
+    transition: trasform 0.3s ease;
+    will-change: transform;
   }
   .contact-box,
   .about-photo {
