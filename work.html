@@ -104,10 +104,12 @@ function openLightbox(index) {
   currentIndex = index;
   lightboxImg.src = items[index].href;
   lightbox.style.display = 'flex';
+  document.body.style.overflow = 'hidden';   // lock background scroll
 }
 
 function closeLightbox() {
   lightbox.style.display = 'none';
+  document.body.style.overflow = '';         // restore scrolling
 }
 
 function showPrev() {
