@@ -136,6 +136,32 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+    // ... your existing openLightbox, closeLightbox, showPrev, showNext, etc. ...
+
+// Swipe support
+let touchStartX = 0;
+let touchEndX = 0;
+
+lightbox.addEventListener('touchstart', (e) => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+lightbox.addEventListener('touchend', (e) => {
+  touchEndX = e.changedTouches[0].screenX;
+  handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+  const swipeDistance = touchEndX - touchStartX;
+  const minSwipe = 50;
+
+  if (swipeDistance > minSwipe) {
+    showPrev();
+  } else if (swipeDistance < -minSwipe) {
+    showNext();
+  }
+}
+
 
 </script>
 
