@@ -148,19 +148,17 @@ lightbox.addEventListener('touchstart', (e) => {
 
 lightbox.addEventListener('touchend', (e) => {
   touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-}, { passive: true });
-
-function handleSwipe() {
   const swipeDistance = touchEndX - touchStartX;
-  const minSwipe = 50;
+  const minSwipe = 40;
 
-  if (swipeDistance > minSwipe) {
-    showPrev();
-  } else if (swipeDistance < -minSwipe) {
-    showNext();
+  if (Math.abs(swipeDistance) > minSwipe) {
+    if (swipeDistance > 0) {
+      showPrev();
+    } else {
+      showNext();
+    }
   }
-}
+}, { passive: true });
 
 
 </script>
